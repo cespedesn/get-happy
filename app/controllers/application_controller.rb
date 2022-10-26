@@ -13,7 +13,7 @@ class ApplicationController < Sinatra::Base
   end
 
   get "/quotes" do
-    quotes = Quote.all
+    quotes = Quote.all.uniq
     quotes.to_json
   end
   
@@ -21,16 +21,20 @@ class ApplicationController < Sinatra::Base
    quotes = Quote.where(user_id: 1)
    quotes.to_json
   end
+  # get "/favorite" do
+  #   author = Quote.where(author_id == author: params[:author])
+  #   author.to_json
+  #  end
   
   post '/quotes' do
-    puts params
     # authorid = Author.find_or_create_by(name: params[:author]).id
     quote = Quote.create(
       
      # author_id: authorid,
-      text_content: params[:text_content],
+      text_content: params[:quote],
+      author: Author.find_or_create_by(name: params[:person])
     )
-    quote.to_json
+    quote.to_json(include: :author)
   end
 
   post '/authors' do
@@ -51,9 +55,7 @@ class ApplicationController < Sinatra::Base
     quote.update(user_id: "")
   end
 
-  def our_method(variable, *Array, **json)
-    return variable, array, json
-  end
+
   # user.qoutes.update(id: params[:qoute_id])
 
 
