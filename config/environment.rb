@@ -8,3 +8,10 @@ Bundler.require(:default, ENV['RACK_ENV'])
 
 # Require in all files in 'app' directory
 require_all 'app'
+
+# require_relative './config/environment'
+
+# # Parse JSON from the request body into the params hash
+# use Rack::JSONBodyParser
+
+# run ApplicationController
