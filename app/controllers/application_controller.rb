@@ -14,7 +14,7 @@ class ApplicationController < Sinatra::Base
 
   get "/quotes" do
     quotes = Quote.all.uniq
-    quotes.to_json
+    quotes.to_json(include: :author)
   end
   
   get "/favorite" do
@@ -28,12 +28,14 @@ class ApplicationController < Sinatra::Base
   
   post '/quotes' do
     # authorid = Author.find_or_create_by(name: params[:author]).id
+    
     quote = Quote.create(
       
      # author_id: authorid,
       text_content: params[:quote],
       author: Author.find_or_create_by(name: params[:person])
     )
+    
     quote.to_json(include: :author)
   end
 
@@ -49,6 +51,11 @@ class ApplicationController < Sinatra::Base
     quote.update(user_id: params[:user_id])
   end
 
+  # post '/authors' do 
+  #   newQuote = Author.create(name: params[:name],
+  #   quote: params[:quote)
+  #     newQuote.to_json
+  # end
 
   delete '/favorite/:id' do
     quote = Quote.find(params[:id])
